@@ -1,802 +1,132 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#050505" />
-  <meta name="description" content="Rhythm.play is a neon funk rhythm arcade. Play original music, collect Pulse Coins, unlock skins, and chase your high score." />
-  <title>RHYTHM.PLAY — Minimal Rhythm Arcade</title>
-  <style>
-:root{color-scheme:dark;--bg:#08090d;--panel:#101116;--panel2:#14151c;--border:#272831;--muted:#70717e;--subtle:#a7a8b6;--text:#f4f3f7;--pink:#ff528f;--purple:#996dff;--mint:#6cfac5;--yellow:#edff7b}
-*{box-sizing:border-box}html{min-height:100%;background:var(--bg)}body{min-height:100vh;margin:0;color:var(--text);font-family:Inter,"Segoe UI",Arial,sans-serif;font-synthesis:none;overflow-x:hidden;background:radial-gradient(ellipse 63% 50% at 50% 40%,#11101d 0%,#08090d 73%)}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--mint);outline-offset:4px}button:disabled{cursor:not-allowed;opacity:.42}.ambient{z-index:0;position:fixed;pointer-events:none;filter:blur(100px);opacity:.3}.ambient-one{width:380px;height:440px;top:17%;left:-240px;background:#482979}.ambient-two{width:350px;height:400px;right:-280px;top:40%;background:#0a6265}.app-shell{position:relative;z-index:1;max-width:1460px;margin:auto;padding:0 52px}.topbar{height:90px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #24242e}.brand-wrap,.header-actions{display:flex;align-items:center}.brand-wrap{gap:17px}.brand-symbol{width:33px;height:33px;display:flex;align-items:center;justify-content:center;gap:3px;transform:rotate(-14deg)}.brand-symbol span{display:block;background:linear-gradient(180deg,#ff5c9b,#a876ff);width:4px;border-radius:2px}.brand-symbol span:nth-child(1),.brand-symbol span:nth-child(5){height:12px}.brand-symbol span:nth-child(2),.brand-symbol span:nth-child(4){height:23px}.brand-symbol span:nth-child(3){height:32px}.brand{font-size:24px;font-weight:950;letter-spacing:-1.1px;line-height:1}.brand>span:first-child{color:var(--pink)}.brand-dot{color:var(--mint)}.edition{margin-left:15px;padding-left:22px;border-left:1px solid #363640;color:#6c6e7b;font-size:10px;letter-spacing:2px;font-weight:800;white-space:nowrap}.edition span{color:#b0a0e1;margin:0 9px}.header-actions{gap:14px}.original-tag{color:#a5a4b2;font-size:10px;letter-spacing:1.3px;font-weight:800;margin-right:10px;white-space:nowrap}.dot,.state-dot,.heading-bullet{display:inline-block;width:6px;height:6px;background:var(--mint);border-radius:50%;box-shadow:0 0 12px var(--mint);vertical-align:middle;margin-right:8px}.header-btn{height:37px;padding:0 15px;background:#16161e;border:1px solid #30303a;border-radius:7px;color:#c4c5cc;font-weight:800;font-size:10px;letter-spacing:1px;display:flex;align-items:center;gap:9px}.header-btn:hover,.pause-btn:hover{border-color:#8c76c0;color:white}.btn-glyph{border:1px solid #84838f;border-radius:50%;width:15px;height:15px;display:grid;place-items:center;font-size:11px}.square-btn{width:39px;padding:10px;justify-content:center}.square-btn svg{width:18px}.main-content{max-width:1220px;margin:34px auto 0}.intro-line{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;color:#adacb6;letter-spacing:2.2px;font-size:10px;font-weight:850}.section-index{color:#60616d}.song-bar{min-height:112px;padding:17px 24px;display:flex;align-items:center;background:linear-gradient(100deg,#171720 0%,#111218 65%,#14151d 100%);border:1px solid #30303b;border-radius:12px;gap:20px;box-shadow:0 14px 55px #0003}.album-art{height:75px;width:75px;flex:0 0 75px;border-radius:7px;display:grid;place-items:center;overflow:hidden;background:radial-gradient(circle at 45% 40%,#fc79a4 0%,#c5478b 18%,#63256d 39%,#2d163e 60%,#0a0c1a 90%);position:relative}.album-art:before{content:"";position:absolute;inset:-35%;background:repeating-conic-gradient(from 0deg,#fff1 0deg 1deg,transparent 1deg 12deg);mix-blend-mode:screen;opacity:.3}.vinyl-inner{width:48px;height:48px;border:1px solid #ffffff3a;border-radius:50%;display:grid;place-items:center;background:repeating-radial-gradient(circle at center,#221026,#361c46 1px,#241126 3px);box-shadow:0 0 10px #12091c}.vinyl-center{width:13px;height:13px;border:4px solid #e27dae;border-radius:50%;background:#1a0d1c}.track-copy{min-width:245px;flex:1}.small-label,.stat-kicker,.micro-copy{font-size:10px;letter-spacing:1.55px;font-weight:850;color:var(--muted)}.small-label{color:#dd9cc9}.separator{margin:0 8px;color:#646271}.track-copy h1{margin:8px 0 7px;letter-spacing:-.8px;font-size:23px;font-weight:900;line-height:1.1}.song-tag{font-size:9px;letter-spacing:1px;padding:5px 8px;border:1px solid #79456e;border-radius:4px;color:#f49bca;margin-left:8px;vertical-align:middle;white-space:nowrap}.track-sub{font-size:10px;letter-spacing:1px;font-weight:750;color:#92919d}.tiny-diamond{font-size:6px;margin:0 8px;color:#7d677e}.track-timing{width:242px;flex:0 0 242px;margin:0 5px}.times,.track-bottom{display:flex;justify-content:space-between;font-size:11px;font-weight:750;font-variant-numeric:tabular-nums}.times span:last-child{color:#858592}.song-progress{margin:12px 0 9px;height:5px;border-radius:5px;overflow:hidden;background:#393643}.song-progress-fill{height:100%;width:0;background:linear-gradient(90deg,#e25cbd,#8a78ff,#6beab8);box-shadow:0 0 15px #e962ae;border-radius:5px}.track-bottom{font-size:8px;letter-spacing:1.1px;color:#6e6e7b}.volume-wrap{display:flex;align-items:center;gap:10px;padding-left:12px;border-left:1px solid #35313c}.volume-wrap svg{width:18px;height:18px;color:#b6a5c9;flex-shrink:0}.volume-wrap input{width:70px;accent-color:#c46be0;cursor:pointer}
-.arena-layout{display:grid;grid-template-columns:minmax(170px,1fr) minmax(0,650px) minmax(170px,1fr);gap:20px;margin-top:24px;align-items:start}.stat-col{display:flex;flex-direction:column;gap:12px;padding-top:33px}.stat-card{position:relative;background:linear-gradient(155deg,#17171e,#111218);border:1px solid #2b2b36;border-radius:10px;padding:21px 20px;min-height:116px;overflow:hidden}.stat-card::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 100% 0%,#8c5bff0a,transparent 70%)}.stat-top{display:flex;justify-content:space-between;align-items:center}.stat-mark{font-size:18px;color:#8877af}.combo-card{min-height:160px}.combo-value{font-size:64px;line-height:1.1;letter-spacing:-4px;font-weight:900;margin:11px 0 5px;font-variant-numeric:tabular-nums}.combo-value span{font-size:32px;color:#e2c5ff;letter-spacing:-2px}.micro-copy{font-size:9px;letter-spacing:1.3px}.stat-line{height:3px;margin-top:16px;background:#373540;border-radius:3px}.gradient-line{background:linear-gradient(90deg,#fe5f98,#9c75ff,#80f6c4);box-shadow:0 0 8px #c161d850}.stat-value{font-size:39px;letter-spacing:-2px;font-weight:850;line-height:1.2;margin:11px 0 6px;font-variant-numeric:tabular-nums}.grade-card{min-height:178px}.grade-value{font-size:72px;line-height:1.04;font-weight:900;color:#e2e0ec;margin:6px 0;letter-spacing:-3px}.mini-bars{height:18px;display:flex;gap:4px;align-items:flex-end;margin-top:18px}.mini-bars i{flex:1;background:linear-gradient(180deg,#e65eb3,#6f56ab);border-radius:2px 2px 0 0;height:25%}.mini-bars i:nth-child(3n){height:75%}.mini-bars i:nth-child(4n){height:100%}.mini-bars i:nth-child(5n){height:55%}.percentage{white-space:nowrap;font-size:36px}.percentage span{font-size:16px;color:#a9a7b2;letter-spacing:-.3px}.accuracy-line{margin-top:13px;overflow:hidden}.accuracy-line i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#d5fb74,#6ef6b2);box-shadow:0 0 9px #b5f878}.side-foot{display:flex;justify-content:space-between;color:#75727f;font-size:9px;letter-spacing:1.4px;font-weight:850;margin:8px 4px}.side-foot span{color:#d0a6dd}.arena-heading{height:33px;display:flex;align-items:flex-start;justify-content:space-between;font-size:10px;letter-spacing:1.6px;color:#a4a0b1;font-weight:850;padding:6px 2px 0}.heading-bullet{background:#dc78dc;box-shadow:0 0 9px #d368d3}.game-state{display:flex;align-items:center;color:#a2a2ae}.state-dot{background:#83818b;box-shadow:none;width:5px;height:5px}.state-dot.running{background:#68fac4;box-shadow:0 0 9px #68fac4}.state-dot.paused{background:#f9ca79;box-shadow:0 0 9px #f9ca79}.game-panel{height:auto;aspect-ratio:1.135/1;max-height:600px;min-height:375px;position:relative;overflow:hidden;border:1px solid #45404f;border-radius:12px;background:#090a11;box-shadow:0 8px 40px #0007,0 0 70px #8c41bd0c}.game-panel:before{position:absolute;content:"";inset:0;border:1px solid #ffffff08;border-radius:inherit;z-index:2;pointer-events:none}.game-panel canvas{display:block;width:100%;height:100%;touch-action:manipulation}.canvas-top{position:absolute;top:18px;left:23px;right:23px;display:flex;justify-content:space-between;pointer-events:none;color:#69657a;letter-spacing:1.35px;font-size:9px;font-weight:800}.hit-notice{position:absolute;top:27%;left:0;right:0;pointer-events:none;text-align:center;font-weight:950;letter-spacing:2px;font-size:18px;text-shadow:0 0 15px currentColor;opacity:0;transition:opacity .1s}.hit-notice.show{opacity:1}.game-overlay{z-index:3;position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(ellipse at 50% 55%,#161126ed 0%,#100d1ae8 48%,#090a12e0 100%);backdrop-filter:blur(5px);padding:20px}.game-overlay.hidden{display:none}.intro-orb{height:78px;width:78px;border-radius:24px;transform:rotate(-11deg);display:grid;place-items:center;margin-bottom:20px;background:linear-gradient(130deg,#c75298,#7252ba 63%,#54a6b4);box-shadow:0 0 58px #b746aa4d;border:1px solid #ffffff43}.intro-orb-center{transform:rotate(11deg);font-size:36px;font-weight:900;color:white}.overline{font-size:10px;letter-spacing:2.6px;color:#cf9aca;font-weight:900}.game-overlay h2,.help-inner h2{font-size:clamp(30px,3.4vw,47px);letter-spacing:-2px;font-weight:950;margin:13px 0 7px;line-height:1.1}.game-overlay h2 em,.help-inner h2 em{font-style:normal;color:var(--pink)}.game-overlay p{line-height:1.6;color:#a5a0b0;font-size:13px;margin:8px 0 20px}.demo-keys,.control-keys{display:flex;gap:8px}.demo-keys{margin-bottom:22px}.demo-keys span,.control-keys button{height:39px;width:39px;display:grid;place-items:center;background:#221d32;border:1px solid #675778;border-bottom:3px solid #8d67c1;border-radius:7px;color:#e9d9f0;font-weight:900;box-shadow:0 4px 0 #0004}.demo-keys span:nth-child(3),.demo-keys span:nth-child(4){border-bottom-color:#e360a5}.primary-btn{display:flex;align-items:center;justify-content:space-between;gap:28px;min-width:228px;height:47px;border:0;border-radius:7px;background:linear-gradient(110deg,#ff6a9e,#ba72f5);color:#1c1020;padding:0 18px 0 23px;font-size:12px;letter-spacing:1.2px;font-weight:950;box-shadow:0 10px 30px #e75bbd3b;transition:transform .15s,filter .15s}.primary-btn:hover{filter:brightness(1.13);transform:translateY(-2px)}.primary-btn span{font-size:20px;font-weight:700}.overlay-caption{font-size:9px;color:#7c748a;letter-spacing:1.4px;font-weight:900;margin-top:18px}.overlay-caption span{margin:0 8px}.text-btn{background:none;border:0;color:#b6aec0;font-size:10px;font-weight:800;letter-spacing:1.4px;margin-top:24px}.text-btn:hover{color:#fff}.result-grade{font-size:74px;color:#b0fac6;font-weight:950;text-shadow:0 0 24px #6ef6b488;margin:4px 0}.results-grid{display:flex;gap:25px;margin:4px 0 28px}.results-grid>div{display:flex;flex-direction:column;gap:6px}.results-grid span{font-size:9px;color:#86818f;letter-spacing:1.5px;font-weight:850}.results-grid strong{font-size:16px;font-variant-numeric:tabular-nums}.play-controls{min-height:78px;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:13px 4px}.controls-group,.control-right{display:flex;align-items:center;gap:14px}.control-label{font-size:9px;letter-spacing:1.4px;color:#82808e;font-weight:850;white-space:nowrap}.control-keys{gap:5px}.control-keys button{height:34px;width:34px;font-size:11px;background:#1a1924;touch-action:manipulation;user-select:none}.control-keys button.active,.control-keys button:active{background:#934cab;transform:translateY(2px);border-bottom-width:1px}.control-right span{font-size:10px;color:#85818f;font-weight:850;white-space:nowrap}.control-right kbd{font-size:10px;color:#ded6e5;border:1px solid #534a61;border-radius:4px;padding:5px;margin-right:5px}.pause-btn{height:35px;display:flex;align-items:center;gap:8px;padding:0 12px;background:#1a1823;border:1px solid #383340;border-radius:6px;color:#c1bcca;font-size:10px;font-weight:850;letter-spacing:1px}.pause-btn svg{height:13px;width:13px}.pause-btn span{color:inherit}.score-card{min-height:160px}.score-value{font-size:clamp(25px,2.4vw,39px);font-weight:900;letter-spacing:-1.3px;margin:24px 0 9px;font-variant-numeric:tabular-nums;white-space:nowrap}.score-line{background:linear-gradient(90deg,#8975ff,#f06cab,#59dfbe)}.notes-value{font-size:25px;font-weight:900;margin:19px 0 9px;display:flex;align-items:baseline;gap:8px;white-space:nowrap;font-variant-numeric:tabular-nums}.notes-divider{color:#574f64;font-weight:500}.notes-value #totalCount{font-size:17px;color:#8c899b}.note-dots{display:flex;gap:4px;margin-top:18px}.note-dots i{flex:1;height:4px;background:#3c3447;border-radius:3px}.note-dots i.active{background:#ef69b6}.judgement-card{min-height:160px}.judgement-row{display:flex;justify-content:space-between;font-size:10px;color:#a8a5b1;font-weight:800;margin-top:17px;letter-spacing:.3px}.judgement-row strong{color:#fff;font-variant-numeric:tabular-nums}.judge-dot{width:6px;height:6px;display:inline-block;border-radius:50%;margin-right:6px}.perfect-dot{background:#91f9c6}.great-dot{background:#bb83ff}.good-dot{background:#f9c078}.no-fail-dot{display:inline-grid;place-items:center;border-radius:50%;width:17px;height:17px;color:#09100e!important;background:#75f3b5;font-weight:900}.page-footer{min-height:78px;border-top:1px solid #22242c;margin-top:17px;display:flex;justify-content:space-between;align-items:center;color:#6c6b79;font-size:9px;letter-spacing:1.2px;font-weight:850;gap:18px}.footer-center{color:#92859b}.footer-divider{margin:0 8px;color:#c27caf}.help-dialog{color:#f4f2f8;background:#17141e;border:1px solid #67506f;border-radius:14px;padding:0;max-width:min(460px,calc(100vw - 32px));box-shadow:0 0 0 100vmax #030207a5,0 30px 100px #000c}.help-dialog::backdrop{background:#05040899;backdrop-filter:blur(8px)}.help-inner{padding:39px;position:relative}.help-inner p{font-size:14px;color:#aba5b4;line-height:1.75}.help-inner kbd{display:inline-block;padding:5px 10px;background:#282035;border:1px solid #6c527a;border-radius:5px;color:#fff}.help-key-row{display:flex;gap:8px;margin:22px 0}.help-key-row kbd{min-width:45px;text-align:center}.help-inner .primary-btn{margin-top:24px}.close-help{position:absolute;right:20px;top:15px;font-size:27px;color:#c2b9c9;border:0;background:none}
-@media(max-width:1250px){.app-shell{padding:0 25px}.arena-layout{grid-template-columns:minmax(130px,1fr) minmax(0,600px) minmax(130px,1fr);gap:12px}.stat-card{padding:17px 13px}.score-value{font-size:27px}.stat-value{font-size:34px}.combo-value{font-size:53px}.edition{display:none}.song-bar{gap:13px}.track-timing{width:185px;flex-basis:185px}}
-@media(max-width:900px){.main-content{margin-top:20px}.app-shell{padding:0 17px}.topbar{height:70px}.original-tag{display:none}.song-bar{padding:12px}.album-art{height:57px;width:57px;flex-basis:57px}.track-copy{min-width:0}.track-copy h1{font-size:18px}.track-timing{width:170px;flex-basis:170px}.volume-wrap{display:none}.arena-layout{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:13px}.play-col{grid-column:1/-1;grid-row:1;max-width:670px;width:100%;margin:auto}.left-stats,.right-stats{grid-row:2;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));padding-top:0}.stat-card{min-height:120px}.stat-col{gap:9px}.combo-card,.score-card{min-height:130px}.grade-card{min-height:135px}.grade-value{font-size:51px}.mini-bars{display:none}.side-foot{display:none}.page-footer{flex-wrap:wrap;justify-content:center;text-align:center;padding:20px 0}.footer-center{display:none}}
-@media(max-width:580px){.brand{font-size:20px}.brand-wrap{gap:6px}.brand-symbol{transform:scale(.85) rotate(-14deg)}.header-actions{gap:6px}.header-btn{padding:0 9px;height:34px}.action-name{display:none}.topbar{height:60px}.intro-line{font-size:8px}.song-bar{gap:11px}.album-art{height:49px;width:49px;flex-basis:49px}.track-copy h1{font-size:16px;margin:6px 0}.track-sub{font-size:8px}.small-label{font-size:8px;letter-spacing:.7px}.song-tag{font-size:7px;padding:3px 4px;margin-left:3px}.track-timing{width:86px;flex-basis:86px;margin:0}.track-bottom{display:none}.song-progress{margin:9px 0}.times{font-size:9px}.game-panel{min-height:350px;aspect-ratio:1/1}.game-overlay h2{font-size:32px}.game-overlay p{font-size:12px}.intro-orb{height:59px;width:59px;border-radius:18px;margin-bottom:13px}.intro-orb-center{font-size:28px}.overline{font-size:8px}.demo-keys{margin-bottom:15px}.demo-keys span{height:32px;width:32px}.primary-btn{height:43px}.overlay-caption{font-size:7px}.play-controls{flex-wrap:wrap;justify-content:center;padding:12px 0}.controls-group{width:100%;justify-content:space-between}.control-keys{gap:8px}.control-keys button{width:50px;height:45px;font-size:15px}.control-right{width:100%;justify-content:space-between}.arena-layout{margin-top:15px}.score-value{font-size:28px}.stat-card{padding:14px}.stat-kicker{font-size:9px}.combo-value{font-size:46px}.stat-value{font-size:31px}.page-footer{font-size:7px}.control-label{font-size:8px}.result-grade{font-size:60px}.results-grid{gap:13px}.results-grid strong{font-size:13px}}
-@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
-/* Give phone-size stats full-width cards instead of squeezing four into a row. */
-@media(max-width:580px){
-  .arena-layout{grid-template-columns:minmax(0,1fr)}
-  .play-col{grid-column:1;grid-row:1}
-  .left-stats,.right-stats{grid-column:1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
-  .left-stats{grid-row:2}
-  .right-stats{grid-row:3}
-  .score-value{font-size:32px}
-  .stat-card{min-width:0}
-}
-
-</style>
-
-<link rel="icon" href="favicon.svg" type="image/svg+xml" />
-<link rel="stylesheet" href="rhythmplus.css" />
-<script src="config.js" defer></script>
-<script src="rhythmplus.js" defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="Rhythm.play — an original phonk-powered cursor chase arcade. Move your mouse or finger to collect glowing moving dots.">
+  <title>Rhythm.play — Phonk Chase</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="rhythmplus.css">
+  <link rel="stylesheet" href="cursor-style.css">
+  <script src="config.js" defer></script>
+  <script src="cursor-game.js" defer></script>
+  <script src="rhythmplus.js" defer></script>
 </head>
 <body>
-  <div class="ambient ambient-one"></div>
-  <div class="ambient ambient-two"></div>
-  <div class="app-shell">
+  <div class="shell">
     <header class="topbar">
-      <div class="brand-wrap">
-        <div class="brand-symbol" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
-        <div class="brand">RHYTHM<span>.PLAY</span></div>
-        <div class="edition">RHYTHM ARCADE <span>\</span> VOL.01</div>
-      </div>
-      <nav class="rh-nav" aria-label="Primary"><button type="button" class="rh-nav-button selected" data-view="play">PLAY</button><button type="button" class="rh-nav-button" data-view="shop">SKIN SHOP</button><button type="button" class="rh-nav-button" data-view="leaderboard">LEADERBOARD</button></nav><div class="header-actions">
-        <div class="original-tag"><span class="dot"></span> ORIGINAL AUDIO ENGINE</div>
-        <button class="header-btn" id="helpBtn" type="button" aria-label="How to play"><span class="btn-glyph">?</span> <span class="action-name">HOW TO PLAY</span></button>
-        <button class="header-btn square-btn" id="fullscreenBtn" type="button" aria-label="Fullscreen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5m18 0v5h-5" /></svg></button>
+      <a class="identity" href="./" aria-label="Rhythm.play home"><span class="identity-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span>RHYTHM<span class="identity-dot">.</span>PLAY</span></a>
+      <span class="edition">PHONK CHASE <span class="edition-divider">/</span> VOL. 02</span>
+      <nav class="rh-nav" aria-label="Main navigation">
+        <button class="rh-nav-button selected" data-view="play" type="button">PLAY</button>
+        <button class="rh-nav-button" data-view="shop" type="button">SKIN SHOP</button>
+        <button class="rh-nav-button" data-view="leaderboard" type="button">LEADERBOARD</button>
+      </nav>
+      <div class="header-actions">
+        <button id="helpBtn" class="thin-button help-button" type="button">HOW TO PLAY</button>
+        <button id="fullscreenBtn" class="thin-button fullscreen-button" type="button" aria-label="Fullscreen" title="Fullscreen"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5m18 0v5h-5"/></svg></button>
       </div>
     </header>
 
-    <main class="main-content">
-      <div class="intro-line"><span>THE STAGE IS YOURS</span><span class="section-index">01 / GROOVE MODE</span></div>
-      <section class="song-bar" aria-label="Song information">
-        <div class="album-art" aria-hidden="true"><div class="vinyl-inner"><div class="vinyl-center"></div></div></div>
-        <div class="track-copy">
-          <div class="small-label">NOW PLAYING <span class="separator">/</span> ORIGINAL SOUNDTRACK</div>
-          <h1>Neon Side Street <span class="song-tag">FUNK MIX</span></h1>
-          <div class="track-sub">RHYTHM.PLAY SOUND SYSTEM <span class="tiny-diamond">◆</span> 112 BPM <span class="tiny-diamond">◆</span> 4 / 4</div>
+    <main>
+      <div class="section-overline"><span>01 &nbsp; / &nbsp; CURSOR ARCADE</span><span>NO KEYS. NO CLICKS. JUST CHASE.</span></div>
+      <section class="track" aria-label="Music track">
+        <div class="track-art" aria-hidden="true"><div class="art-disc"></div><div class="art-ring"></div><span>RP / 02</span></div>
+        <div class="track-labels">
+          <span class="eyebrow">NOW PLAYING &nbsp; / &nbsp; ORIGINAL PHONK</span>
+          <h1>MIDNIGHT RUN <small>DRIFT PHONK</small></h1>
+          <div class="track-subtitle">RHYTHM.PLAY SOUND SYSTEM &nbsp; · &nbsp; 150 BPM &nbsp; · &nbsp; 4/4</div>
         </div>
-        <div class="track-timing">
-          <div class="times"><span id="currentTime">0:00</span><span id="durationTime">1:43</span></div>
+        <div class="transport">
+          <div class="transport-times"><span id="currentTime">0:00</span><span id="durationTime">1:17</span></div>
           <div class="song-progress"><div class="song-progress-fill" id="songProgress"></div></div>
-          <div class="track-bottom"><span id="progressStatus">READY WHEN YOU ARE</span><span>STEREO / WEB AUDIO</span></div>
+          <div class="transport-bottom"><span id="progressStatus">READY TO PLAY</span><span>AUDIO / SYNTHESIZED LIVE</span></div>
         </div>
-        <div class="volume-wrap"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Zm4 4a5 5 0 0 1 0 6m3-9a9 9 0 0 1 0 12"/></svg><input id="volume" type="range" min="0" max="100" value="65" aria-label="Music volume" /></div>
+        <div class="volume-container"><label class="visually-hidden" for="volume">Music volume</label><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Zm4 4a5 5 0 0 1 0 6m3-9a9 9 0 0 1 0 12"/></svg><input id="volume" type="range" min="0" max="100" value="64"></div>
       </section>
 
-      <section class="rh-meta" aria-label="Player and rewards"><div><span class="rh-live-dot"></span><strong>ARCADE READY</strong><span class="rh-meta-muted"> · ORIGINAL FUNK / VOL.01</span></div><div class="rh-wallet"><span>✦</span> <strong id="walletBalance">0</strong> <span>PULSE COINS</span></div><button type="button" id="profileShortcut" class="rh-profile-btn">GUEST PLAYER <span>↗</span></button></section>
-      <section class="arena-layout" aria-label="Rhythm game">
-        <aside class="stat-col left-stats">
-          <div class="stat-card combo-card"><div class="stat-top"><span class="stat-kicker">MULTIPLIER</span><span class="stat-mark">↗</span></div><div class="combo-value" id="comboValue">0<span>x</span></div><div class="micro-copy">CURRENT COMBO</div><div class="stat-line gradient-line"></div></div>
-          <div class="stat-card"><div class="stat-kicker">MAX COMBO</div><div class="stat-value" id="maxCombo">000</div><div class="micro-copy">BEST STREAK</div></div>
-          <div class="stat-card grade-card"><div class="stat-kicker">PERFORMANCE</div><div class="grade-value" id="gradeValue">—</div><div class="micro-copy">CURRENT GRADE</div><div class="mini-bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-          <div class="stat-card accuracy-card"><div class="stat-kicker">ACCURACY</div><div class="stat-value percentage" id="accuracyValue">100<span>%</span></div><div class="stat-line accuracy-line"><i id="accuracyFill"></i></div></div>
-          <div class="side-foot">STAY ON THE BEAT <span>↗</span></div>
+      <div class="subhead">
+        <div class="subhead-left"><span class="status-dot"></span><span id="gameStatus">ARCADE READY</span><span class="subhead-line">/</span><span>ORIGINAL PHONK AUDIO</span></div>
+        <div class="subhead-right"><span class="coin-icon">◈</span><strong id="walletBalance">0</strong><span>COINS</span><button id="profileShortcut" class="profile-button" type="button">GUEST PLAYER ↗</button></div>
+      </div>
+
+      <section class="game-layout" aria-label="Cursor chase game and statistics">
+        <aside class="game-stats stats-left" aria-label="Combo statistics">
+          <div class="info-box">
+            <div class="box-label">CURRENT COMBO <span>01</span></div>
+            <div class="big-number" id="comboValue">0<span>×</span></div>
+            <div class="box-foot">KEEP YOUR CURSOR MOVING</div>
+          </div>
+          <div class="info-box">
+            <div class="box-label">ACCURACY <span>02</span></div>
+            <div class="medium-number" id="accuracyValue">100.0%</div>
+            <div class="meter"><span id="accuracyMeter"></span></div>
+          </div>
+          <div class="info-box compact-box">
+            <div class="box-label">GRADE <span>03</span></div>
+            <div class="grade" id="gradeValue">—</div>
+          </div>
+          <div class="stats-note">MOVE &nbsp; / &nbsp; TOUCH &nbsp; / &nbsp; COLLECT</div>
         </aside>
 
-        <div class="play-col">
-          <div class="arena-heading"><span><span class="heading-bullet"></span> THE PLAYFIELD</span><div class="game-state"><span id="stateDot" class="state-dot"></span><span id="stateText">STANDBY</span></div></div>
-          <div class="game-panel" id="gamePanel">
-            <canvas id="gameCanvas" aria-label="Four-lane rhythm game: use D, F, J and K to hit notes when they reach the target rings."></canvas>
-            <div class="canvas-top"><span class="canvas-decoration">◆ LIVE FREQUENCY FIELD</span><span id="canvasTopRight">FS_001</span></div>
-            <div class="hit-notice" id="hitNotice" aria-live="polite"></div>
-
-            <div class="game-overlay" id="startOverlay">
-              <div class="intro-orb" aria-hidden="true"><div class="intro-orb-center">♫</div></div>
-              <span class="overline">WELCOME TO THE FREQUENCY</span>
-              <h2>FEEL THE <em>GROOVE.</em></h2>
-              <p>Hit the notes on the beat. Stack your combo.<br />Let the funk take over.</p>
-              <div class="demo-keys" aria-label="Control keys"><span>D</span><span>F</span><span>J</span><span>K</span></div>
-              <button class="primary-btn" id="startBtn" type="button">START THE BEAT <span>↗</span></button>
-              <div class="overlay-caption">HEADPHONES RECOMMENDED <span>•</span> SOUND ON</div>
+        <div class="game-center">
+          <div class="game-topline"><span><i class="status-dot mini"></i> LIVE PLAYFIELD</span><span id="remainingValue">0 TARGETS / 0 HIT</span></div>
+          <div class="game-frame" id="gameFrame">
+            <canvas id="gameCanvas" width="920" height="560" aria-label="Animated arcade field. Move your mouse pointer or finger over the colored moving dots to collect them."></canvas>
+            <div class="game-hud"><span id="hudText">MOVE TO COLLECT</span><span id="hudBeat">150 BPM</span></div>
+            <div id="hitNotice" class="hit-notice" aria-live="off"></div>
+            <div id="startOverlay" class="screen-overlay">
+              <div class="overlay-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+              <div class="eyebrow">NO CLICKING REQUIRED</div>
+              <h2>CHASE <em>THE SIGNAL.</em></h2>
+              <p>Glowing dots move across the screen. Run your cursor through them to collect points. On mobile, slide your finger across the field.</p>
+              <button id="startBtn" class="main-button" type="button">START PHONK CHASE <span>↗</span></button>
+              <div class="overlay-hint">MOVE YOUR MOUSE OR DRAG YOUR FINGER</div>
             </div>
-
-            <div class="game-overlay hidden" id="pauseOverlay">
-              <span class="overline">HOLD THAT GROOVE</span><h2>ON <em>PAUSE.</em></h2><p>The beat is waiting for you.</p>
-              <button class="primary-btn" id="resumeBtn" type="button">RESUME SESSION <span>▶</span></button>
-              <button class="text-btn" id="restartFromPause" type="button">RESTART TRACK</button>
+            <div id="pauseOverlay" class="screen-overlay hidden">
+              <div class="eyebrow">SESSION PAUSED</div>
+              <h2>TAKE <em>A BEAT.</em></h2>
+              <p>Your score is safe. Continue when you're ready.</p>
+              <button id="resumeBtn" class="main-button" type="button">RESUME <span>↗</span></button>
+              <button id="restartFromPause" class="plain-button" type="button">RESTART TRACK</button>
             </div>
-
-            <div class="game-overlay hidden" id="resultsOverlay">
-              <span class="overline">SESSION COMPLETE</span><h2>TRACK <em>CLEARED.</em></h2>
-              <div class="result-grade" id="resultGrade">S</div><div class="results-grid"><div><span>SCORE</span><strong id="resultScore">0</strong></div><div><span>ACCURACY</span><strong id="resultAccuracy">0%</strong></div><div><span>MAX COMBO</span><strong id="resultCombo">0</strong></div></div>
-              <button class="primary-btn" id="playAgainBtn" type="button">PLAY AGAIN <span>↗</span></button>
+            <div id="resultsOverlay" class="screen-overlay hidden">
+              <div class="eyebrow">SESSION COMPLETE</div>
+              <h2>RUN <em>FINISHED.</em></h2>
+              <div class="result-grade" id="resultGrade">S</div>
+              <div class="results-grid">
+                <div><span>SCORE</span><strong id="resultScore">0</strong></div>
+                <div><span>ACCURACY</span><strong id="resultAccuracy">0%</strong></div>
+                <div><span>MAX COMBO</span><strong id="resultCombo">0</strong></div>
+              </div>
+              <button id="playAgainBtn" class="main-button" type="button">RUN IT BACK <span>↗</span></button>
             </div>
           </div>
-          <div class="play-controls">
-            <div class="controls-group"><span class="control-label">HIT THE NOTES</span><div class="control-keys" id="touchControls"><button type="button" data-lane="0" aria-label="Lane D">D</button><button type="button" data-lane="1" aria-label="Lane F">F</button><button type="button" data-lane="2" aria-label="Lane J">J</button><button type="button" data-lane="3" aria-label="Lane K">K</button></div></div>
-            <div class="control-right"><span><kbd>SPACE</kbd> PAUSE</span><button id="pauseBtn" class="pause-btn" type="button" disabled><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg><span id="pauseBtnText">PAUSE</span></button></div>
+          <div class="game-controls">
+            <div><span class="control-dot"></span><strong>POINTER TRACKING</strong><span class="muted-control">MOUSE / TOUCH</span></div>
+            <div><span class="muted-control">SPACE TO PAUSE</span><button class="thin-button" id="pauseBtn" type="button" disabled>Ⅱ &nbsp; PAUSE</button></div>
           </div>
         </div>
 
-        <aside class="stat-col right-stats">
-          <div class="stat-card score-card"><div class="stat-top"><span class="stat-kicker">TOTAL SCORE</span><span class="stat-mark">★</span></div><div class="score-value" id="scoreValue">000,000</div><div class="micro-copy">POINTS EARNED</div><div class="stat-line score-line"></div></div>
-          <div class="stat-card"><div class="stat-kicker">MISSED NOTES</div><div class="stat-value" id="missValue">00</div><div class="micro-copy">KEEP IT TIGHT</div></div>
-          <div class="stat-card notes-card"><div class="stat-kicker">NOTES HIT</div><div class="notes-value"><span id="hitCount">0</span><span class="notes-divider">/</span><span id="totalCount">0</span></div><div class="micro-copy">TOTAL NOTES</div><div class="note-dots" id="noteDots" aria-hidden="true"></div></div>
-          <div class="stat-card judgement-card"><div class="stat-kicker">JUDGEMENTS</div><div class="judgement-row"><span><i class="judge-dot perfect-dot"></i> PERFECT</span><strong id="perfectCount">0</strong></div><div class="judgement-row"><span><i class="judge-dot great-dot"></i> GREAT</span><strong id="greatCount">0</strong></div><div class="judgement-row"><span><i class="judge-dot good-dot"></i> GOOD</span><strong id="goodCount">0</strong></div></div>
-          <div class="side-foot right-side-foot">NO FAIL MODE <span class="no-fail-dot">✓</span></div>
+        <aside class="game-stats stats-right" aria-label="Score statistics">
+          <div class="info-box score-box"><div class="box-label">SCORE <span>04</span></div><div class="score-number" id="scoreValue">0</div><div class="box-foot">PERSONAL RECORD CHASE</div></div>
+          <div class="info-box"><div class="box-label">COLLECTED <span>05</span></div><div class="medium-number" id="hitsValue">0</div><div class="box-foot">DOTS CAUGHT</div></div>
+          <div class="info-box"><div class="box-label">MISSED <span>06</span></div><div class="medium-number" id="missesValue">0</div><div class="box-foot">DOTS THAT ESCAPED</div></div>
+          <div class="stats-note">PHONK CHASE &nbsp; / &nbsp; VOL.02</div>
         </aside>
       </section>
-
-      <footer class="page-footer"><span>RHYTHM.PLAY © 2026 <span class="footer-divider">/</span> MADE FOR THE BEAT</span><span class="footer-center">100% ORIGINAL GENERATED FUNK • WORKS OFFLINE</span><span>VOLUME 01 <span class="footer-divider">/</span> NEVER MISS THE GROOVE</span></footer>
+      <footer class="page-footer"><span>RHYTHM.PLAY © 2026</span><span>BUILT FOR PRECISION. PLAY FOR THE FEEL.</span><span>MONO EDITION / V02</span></footer>
     </main>
   </div>
-  <dialog id="helpDialog" class="help-dialog"><div class="help-inner"><button id="closeHelp" class="close-help" type="button" aria-label="Close instructions">×</button><div class="small-label">THE PLAYBOOK</div><h2>HOW TO <em>PLAY.</em></h2><p>Notes travel down four neon lanes. Press the matching key as each note reaches the circular target.</p><div class="help-key-row"><kbd>D</kbd><kbd>F</kbd><kbd>J</kbd><kbd>K</kbd></div><p>Better timing earns more points. Build a streak for a higher multiplier. Press <kbd>Space</kbd> to pause or resume. On phones, tap the four on-screen keys.</p><p>The backing track is original funk music synthesized directly in your browser. Sound begins after you press Start.</p><button class="primary-btn" id="gotItBtn" type="button">GOT IT <span>↗</span></button></div></dialog>
-<script>
-(() => {
-  'use strict';
-
-  // All music is original, synthesized in real time with the Web Audio API.
-  // No remote services, music files or third-party libraries are required.
-  const BPM = 112;
-  const BEAT = 60 / BPM;
-  const STEP = BEAT / 4;
-  const BARS = 48;
-  const TOTAL_STEPS = BARS * 16;
-  const TRACK_DURATION = TOTAL_STEPS * STEP;
-  const TRAVEL_TIME = 1.72;
-  const HIT_Y = 391;
-  const SPAWN_Y = 104;
-  const LANES = [176, 272, 368, 464];
-  const KEYS = ['D', 'F', 'J', 'K'];
-  const COLORS = ['#8c85ff', '#b47bff', '#ff73bb', '#76f5ca'];
-  const $ = (id) => document.getElementById(id);
-  const canvas = $('gameCanvas');
-  const paint = canvas.getContext('2d');
-  let gameState = 'idle';
-  let audio = null;
-  let master = null;
-  let noiseBuffer = null;
-  let audioOrigin = 0;
-  let nextMusicStep = 0;
-  let volume = 0.65;
-  let notes = [];
-  let particles = [];
-  let score = 0;
-  let combo = 0;
-  let maxCombo = 0;
-  let hits = 0;
-  let misses = 0;
-  let perfect = 0;
-  let great = 0;
-  let good = 0;
-  let accuracyPoints = 0;
-  let lastTime = 0;
-  let lastUISecond = -1;
-  let feedbackTimer = null;
-  let visualHits = [0, 0, 0, 0];
-  let screenShake = 0;
-  let animationTick = 0;
-  let lastFrame = performance.now();
-
-  const fmt = (value) => Math.max(0, Math.floor(value)).toLocaleString('en-US');
-  const timeFmt = (seconds) => `${Math.floor(Math.max(0, seconds) / 60)}:${String(Math.floor(Math.max(0, seconds) % 60)).padStart(2, '0')}`;
-  const clamp = (v, min, max) => Math.min(max, Math.max(min, v));
-
-  // A repeatable note chart: syncopated notes, alternating hands and occasional chords.
-  function rng(seed) { return () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }; }
-  function buildChart() {
-    const random = rng(124890);
-    const sequence = [];
-    let previous = 1;
-    for (let bar = 0; bar < BARS; bar++) {
-      const placements = [0, 2, 4, 6, 8, 10, 12, 14];
-      if (bar % 4 >= 2) placements.push(7, 15);
-      for (const step of placements) {
-        const beatTime = (bar * 16 + step) * STEP;
-        if (beatTime < 2.1 || beatTime > TRACK_DURATION - 1.0) continue;
-        if (random() < (step % 4 === 0 ? 0.09 : 0.22)) continue;
-        let lane;
-        if (random() < 0.48) lane = (previous + (random() < 0.5 ? 1 : 3)) % 4;
-        else lane = Math.floor(random() * 4);
-        previous = lane;
-        sequence.push({ id: sequence.length, time: beatTime, lane, judged: false });
-        if (bar > 4 && step % 4 === 0 && random() < 0.12) {
-          let partner = (lane + 2 + Math.floor(random() * 2)) % 4;
-          if (partner === lane) partner = (lane + 1) % 4;
-          sequence.push({ id: sequence.length, time: beatTime, lane: partner, judged: false });
-        }
-      }
-    }
-    return sequence.sort((a, b) => a.time - b.time);
-  }
-
-  function resetStats() {
-    score = combo = maxCombo = hits = misses = perfect = great = good = accuracyPoints = 0;
-    particles = [];
-    visualHits = [0, 0, 0, 0];
-    lastTime = 0;
-    lastUISecond = -1;
-    nextMusicStep = 0;
-    screenShake = 0;
-    notes = buildChart();
-    $('totalCount').textContent = fmt(notes.length);
-    updateStats();
-    updateProgress(0);
-  }
-
-  function rating() {
-    const judged = hits + misses;
-    if (!judged) return '—';
-    const accuracy = accuracyPoints / (judged * 300);
-    return accuracy >= 0.985 ? 'S' : accuracy >= 0.935 ? 'A' : accuracy >= 0.85 ? 'B' : accuracy >= 0.72 ? 'C' : 'D';
-  }
-
-  function updateStats() {
-    const judged = hits + misses;
-    const acc = judged ? accuracyPoints / (judged * 300) * 100 : 100;
-    $('comboValue').innerHTML = `${fmt(combo)}<span>x</span>`;
-    $('maxCombo').textContent = String(maxCombo).padStart(3, '0');
-    $('gradeValue').textContent = rating();
-    $('accuracyValue').innerHTML = `${acc.toFixed(1)}<span>%</span>`;
-    $('accuracyFill').style.width = `${acc}%`;
-    $('scoreValue').textContent = String(score).padStart(6, '0').replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    $('missValue').textContent = String(misses).padStart(2, '0');
-    $('hitCount').textContent = fmt(hits);
-    $('perfectCount').textContent = fmt(perfect);
-    $('greatCount').textContent = fmt(great);
-    $('goodCount').textContent = fmt(good);
-  }
-
-  function updateProgress(t) {
-    const bounded = clamp(t, 0, TRACK_DURATION);
-    const second = Math.floor(bounded);
-    if (second !== lastUISecond) {
-      $('currentTime').textContent = timeFmt(bounded);
-      lastUISecond = second;
-    }
-    $('songProgress').style.width = `${bounded / TRACK_DURATION * 100}%`;
-    const count = Math.floor(bounded / TRACK_DURATION * 15);
-    [...$('noteDots').children].forEach((dot, index) => dot.classList.toggle('active', index <= count));
-  }
-
-  function setState(state) {
-    gameState = state;
-    $('startOverlay').classList.toggle('hidden', state !== 'idle');
-    $('pauseOverlay').classList.toggle('hidden', state !== 'paused');
-    $('resultsOverlay').classList.toggle('hidden', state !== 'ended');
-    $('pauseBtn').disabled = (state !== 'playing' && state !== 'paused');
-    $('pauseBtnText').textContent = state === 'paused' ? 'RESUME' : 'PAUSE';
-    const label = { idle: 'STANDBY', playing: 'LIVE SESSION', paused: 'PAUSED', ended: 'COMPLETE' }[state];
-    $('stateText').textContent = label;
-    $('progressStatus').textContent = { idle: 'READY WHEN YOU ARE', playing: 'NOW PLAYING', paused: 'PLAYBACK PAUSED', ended: 'TRACK COMPLETED' }[state];
-    $('stateDot').classList.toggle('running', state === 'playing');
-    $('stateDot').classList.toggle('paused', state === 'paused');
-  }
-
-  // Original synthesizer / drum machine.
-  function initAudio() {
-    const AudioCtor = window.AudioContext || window.webkitAudioContext;
-    if (!AudioCtor) throw new Error('This browser does not support Web Audio.');
-    audio = new AudioCtor();
-    const compressor = audio.createDynamicsCompressor();
-    compressor.threshold.value = -19;
-    compressor.knee.value = 20;
-    compressor.ratio.value = 3.7;
-    compressor.attack.value = 0.006;
-    compressor.release.value = 0.22;
-    master = audio.createGain();
-    master.gain.value = volume * 0.80;
-    master.connect(compressor);
-    compressor.connect(audio.destination);
-    noiseBuffer = audio.createBuffer(1, Math.floor(audio.sampleRate * 0.6), audio.sampleRate);
-    const data = noiseBuffer.getChannelData(0);
-    const random = rng(68432);
-    for (let i = 0; i < data.length; i++) data[i] = random() * 2 - 1;
-  }
-
-  function noise(t, decay, gain, highPass, lowPass = 0) {
-    const source = audio.createBufferSource();
-    source.buffer = noiseBuffer;
-    const hp = audio.createBiquadFilter();
-    hp.type = 'highpass';
-    hp.frequency.value = highPass;
-    const amp = audio.createGain();
-    amp.gain.setValueAtTime(Math.max(0.0001, gain), t);
-    amp.gain.exponentialRampToValueAtTime(0.0001, t + decay);
-    source.connect(hp);
-    if (lowPass) {
-      const lp = audio.createBiquadFilter();
-      lp.type = 'lowpass';
-      lp.frequency.value = lowPass;
-      hp.connect(lp);
-      lp.connect(amp);
-    } else hp.connect(amp);
-    amp.connect(master);
-    source.start(t);
-    source.stop(t + decay + 0.01);
-  }
-
-  function kick(t, velocity = 1) {
-    const osc = audio.createOscillator();
-    const amp = audio.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(165, t);
-    osc.frequency.exponentialRampToValueAtTime(45, t + 0.095);
-    osc.frequency.exponentialRampToValueAtTime(38, t + 0.22);
-    amp.gain.setValueAtTime(0.0001, t);
-    amp.gain.linearRampToValueAtTime(0.72 * velocity, t + 0.006);
-    amp.gain.exponentialRampToValueAtTime(0.0001, t + 0.29);
-    osc.connect(amp); amp.connect(master);
-    osc.start(t); osc.stop(t + 0.31);
-    noise(t, 0.016, 0.12 * velocity, 5000);
-  }
-
-  function snare(t, velocity = 1) {
-    noise(t, 0.145, 0.27 * velocity, 1000, 9000);
-    const osc = audio.createOscillator();
-    const amp = audio.createGain();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(205, t);
-    osc.frequency.exponentialRampToValueAtTime(128, t + 0.08);
-    amp.gain.setValueAtTime(0.19 * velocity, t);
-    amp.gain.exponentialRampToValueAtTime(0.0001, t + 0.095);
-    osc.connect(amp); amp.connect(master);
-    osc.start(t); osc.stop(t + 0.11);
-  }
-
-  function hat(t, open = false, velocity = 1) {
-    noise(t, open ? 0.24 : 0.047, (open ? 0.12 : 0.073) * velocity, 6700);
-  }
-
-  function clap(t, velocity = 1) {
-    for (let i = 0; i < 3; i++) noise(t + i * 0.012, 0.065 + i * 0.018, 0.075 * velocity, 1200, 6500);
-  }
-
-  const freq = midi => 440 * Math.pow(2, (midi - 69) / 12);
-  function bass(t, midi, length = 0.22, velocity = 1) {
-    const f = freq(midi);
-    const filter = audio.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.Q.value = 3.6;
-    filter.frequency.setValueAtTime(1800, t);
-    filter.frequency.exponentialRampToValueAtTime(270, t + Math.min(0.18, length));
-    const amp = audio.createGain();
-    amp.gain.setValueAtTime(0.0001, t);
-    amp.gain.linearRampToValueAtTime(0.33 * velocity, t + 0.012);
-    amp.gain.exponentialRampToValueAtTime(0.10 * velocity, t + Math.max(0.045, length * 0.54));
-    amp.gain.exponentialRampToValueAtTime(0.0001, t + length);
-    for (const [type, level] of [['sawtooth', 0.6], ['triangle', 0.62]]) {
-      const osc = audio.createOscillator();
-      const mix = audio.createGain();
-      osc.type = type;
-      osc.frequency.setValueAtTime(f * 1.022, t);
-      osc.frequency.exponentialRampToValueAtTime(f, t + 0.035);
-      mix.gain.value = level;
-      osc.connect(mix); mix.connect(filter);
-      osc.start(t); osc.stop(t + length + 0.025);
-    }
-    filter.connect(amp); amp.connect(master);
-  }
-
-  function chord(t, rootIndex, velocity = 1) {
-    const voicings = [[52,55,59,62], [57,60,64,67], [50,54,57,60], [47,51,54,57]];
-    const filter = audio.createBiquadFilter();
-    filter.type = 'lowpass'; filter.Q.value = 1.1;
-    filter.frequency.setValueAtTime(2500, t);
-    filter.frequency.exponentialRampToValueAtTime(650, t + 0.20);
-    const amp = audio.createGain();
-    amp.gain.setValueAtTime(0.0001, t);
-    amp.gain.linearRampToValueAtTime(0.09 * velocity, t + 0.009);
-    amp.gain.exponentialRampToValueAtTime(0.0001, t + 0.21);
-    voicings[rootIndex].forEach((midi, i) => {
-      const osc = audio.createOscillator();
-      osc.type = i % 2 ? 'triangle' : 'sawtooth';
-      osc.frequency.value = freq(midi);
-      osc.detune.value = i % 2 ? -4 : 3;
-      osc.connect(filter);
-      osc.start(t); osc.stop(t + 0.23);
-    });
-    filter.connect(amp); amp.connect(master);
-  }
-
-  function lead(t, midi, length = 0.16, velocity = 1) {
-    const osc = audio.createOscillator();
-    const lp = audio.createBiquadFilter();
-    const amp = audio.createGain();
-    osc.type = 'square';
-    osc.frequency.setValueAtTime(freq(midi) * 1.006, t);
-    osc.frequency.exponentialRampToValueAtTime(freq(midi), t + 0.06);
-    lp.type = 'lowpass';
-    lp.Q.value = 2.0;
-    lp.frequency.setValueAtTime(4000, t);
-    lp.frequency.exponentialRampToValueAtTime(750, t + length);
-    amp.gain.setValueAtTime(0.0001, t);
-    amp.gain.linearRampToValueAtTime(0.075 * velocity, t + 0.006);
-    amp.gain.exponentialRampToValueAtTime(0.0001, t + length);
-    osc.connect(lp); lp.connect(amp); amp.connect(master);
-    osc.start(t); osc.stop(t + length + 0.012);
-  }
-
-  function stepMusic(index, time) {
-    const step = index % 16;
-    const bar = Math.floor(index / 16);
-    const chordIndex = Math.floor(bar / 2) % 4;
-    const root = [40, 45, 38, 47][chordIndex];
-    const downbeat = step === 0;
-    if ([0, 6, 8, 11, 14].includes(step) || (bar % 4 === 3 && step === 15)) kick(time, downbeat ? 1.02 : step === 11 ? 0.58 : 0.78);
-    if (step === 4 || step === 12) { snare(time, 0.84); clap(time, 0.65); }
-    if (step === 15 && bar % 2 === 1) snare(time, 0.20);
-    if (step % 2 === 0) hat(time, step === 14 && bar % 2 === 0, step % 4 === 0 ? 0.65 : 0.9);
-    if (step === 3 || step === 7 || step === 11 || step === 15) hat(time, false, 0.34);
-    const bassSteps = [0, 3, 6, 8, 10, 13, 15];
-    const bassIntervals = [0, 0, 7, 0, 10, 7, 12];
-    const bIndex = bassSteps.indexOf(step);
-    if (bIndex !== -1) bass(time, root + bassIntervals[bIndex] + (bar % 4 === 3 && step === 15 ? -2 : 0), bIndex === 0 ? 0.32 : 0.19, bIndex === 0 ? 1 : 0.7);
-    if (step === 2 || step === 7 || step === 10 || (step === 15 && bar % 2 === 0)) chord(time, chordIndex, step === 2 ? 0.85 : 0.57);
-    // A restrained E minor pentatonic call-and-response synth riff every 4 bars.
-    if (bar % 4 >= 2 && [1, 5, 9, 12, 15].includes(step)) {
-      const riff = [76, 74, 71, 69, 67, 64, 71, 74, 76, 79];
-      lead(time, riff[((bar % 4 - 2) * 5 + [1, 5, 9, 12, 15].indexOf(step)) % riff.length], step === 12 ? 0.27 : 0.12, 0.68);
-    }
-  }
-
-  function scheduleMusic() {
-    if (!audio || gameState !== 'playing') return;
-    const horizon = audio.currentTime + 0.35;
-    while (nextMusicStep < TOTAL_STEPS && audioOrigin + nextMusicStep * STEP < horizon) {
-      stepMusic(nextMusicStep, audioOrigin + nextMusicStep * STEP);
-      nextMusicStep++;
-    }
-  }
-
-  async function stopAudio() {
-    const old = audio;
-    audio = null; master = null; noiseBuffer = null;
-    if (old && old.state !== 'closed') { try { await old.close(); } catch (_) {} }
-  }
-
-  async function startGame() {
-    if (gameState === 'playing') return;
-    await stopAudio();
-    resetStats();
-    try {
-      initAudio();
-      await audio.resume();
-      audioOrigin = audio.currentTime + 0.20;
-      setState('playing');
-      window.dispatchEvent(new Event('rhythm:started'));
-      scheduleMusic();
-    } catch (error) {
-      setState('idle');
-      window.alert('Audio could not start. Please allow sound in your browser and try again. ' + error.message);
-    }
-  }
-
-  async function togglePause() {
-    if (!audio) return;
-    if (gameState === 'playing') {
-      await audio.suspend();
-      setState('paused');
-    } else if (gameState === 'paused') {
-      await audio.resume();
-      setState('playing');
-    }
-  }
-
-  function endGame() {
-    if (gameState !== 'playing') return;
-    setState('ended');
-    $('resultGrade').textContent = rating();
-    $('resultScore').textContent = fmt(score);
-    $('resultCombo').textContent = fmt(maxCombo);
-    const accuracy = (hits + misses) ? accuracyPoints / ((hits + misses) * 300) * 100 : 100;
-    $('resultAccuracy').textContent = `${accuracy.toFixed(1)}%`;
-    window.dispatchEvent(new CustomEvent("rhythm:completed", { detail: { score, accuracy, maxCombo, hits, misses, grade: rating() } }));
-    void stopAudio();
-  }
-
-  function spawnParticles(lane, quality) {
-    const x = LANES[lane];
-    const n = quality === 'PERFECT' ? 18 : 10;
-    for (let i = 0; i < n; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const speed = 1.0 + Math.random() * 4.3;
-      particles.push({ x, y: HIT_Y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed - 0.5, ttl: 0.34 + Math.random() * .26, life: 0, radius: 1.2 + Math.random() * 2.5, color: COLORS[lane] });
-    }
-    if (particles.length > 150) particles.splice(0, particles.length - 150);
-  }
-
-  function showFeedback(message, color) {
-    const box = $('hitNotice');
-    box.textContent = message;
-    box.style.color = color;
-    box.classList.add('show');
-    clearTimeout(feedbackTimer);
-    feedbackTimer = setTimeout(() => box.classList.remove('show'), 260);
-  }
-
-  function hitLane(lane) {
-    visualHits[lane] = performance.now() + 160;
-    if (gameState !== 'playing' || !audio) return;
-    const t = audio.currentTime - audioOrigin;
-    if (t < 0) return;
-    let best = null;
-    let bestDiff = Infinity;
-    for (const note of notes) {
-      if (note.judged || note.lane !== lane) continue;
-      const delta = Math.abs(note.time - t);
-      if (delta < bestDiff && delta <= 0.21) { best = note; bestDiff = delta; }
-      if (note.time > t + 0.21) break;
-    }
-    if (!best) return;
-    best.judged = true;
-    combo++;
-    maxCombo = Math.max(maxCombo, combo);
-    hits++;
-    let quality, points, color;
-    if (bestDiff <= 0.075) { quality = 'PERFECT'; points = 300; perfect++; color = '#8cfac8'; }
-    else if (bestDiff <= 0.145) { quality = 'GREAT'; points = 200; great++; color = '#c191ff'; }
-    else { quality = 'GOOD'; points = 100; good++; color = '#fbd282'; }
-    accuracyPoints += points;
-    score += Math.round(points * (1 + Math.min(combo, 50) / 50));
-    showFeedback(quality, color);
-    screenShake = 4.3;
-    spawnParticles(lane, quality);
-    updateStats();
-  }
-
-  function missExpiredNotes(t) {
-    let changed = false;
-    for (const note of notes) {
-      if (note.time > t - 0.22) break;
-      if (!note.judged) {
-        note.judged = true;
-        misses++;
-        combo = 0;
-        changed = true;
-        showFeedback('MISS', '#ff728b');
-      }
-    }
-    if (changed) updateStats();
-  }
-
-  function resizeCanvas() {
-    const rect = canvas.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.max(1, Math.round(rect.width * dpr));
-    canvas.height = Math.max(1, Math.round(rect.height * dpr));
-  }
-  window.addEventListener('resize', resizeCanvas);
-
-  function roundedRect(x, y, w, h, r) {
-    const radius = Math.min(r, w / 2, h / 2);
-    paint.beginPath();
-    paint.moveTo(x + radius, y);
-    paint.arcTo(x + w, y, x + w, y + h, radius);
-    paint.arcTo(x + w, y + h, x, y + h, radius);
-    paint.arcTo(x, y + h, x, y, radius);
-    paint.arcTo(x, y, x + w, y, radius);
-    paint.closePath();
-  }
-
-  function drawScene(t, dt) {
-    const w = canvas.width, h = canvas.height;
-    paint.setTransform(w / 640, 0, 0, h / 540, 0, 0);
-    paint.clearRect(0, 0, 640, 540);
-    paint.fillStyle = '#080808';
-    paint.fillRect(0, 0, 640, 540);
-    animationTick += dt;
-    const isPlaying = gameState === 'playing';
-    const phase = isPlaying ? t : animationTick * .35;
-    const pulse = (1 + Math.cos(phase * 2 * Math.PI / BEAT)) / 2;
-    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches || false;
-
-    paint.save();
-    if (!reducedMotion && screenShake > .1 && isPlaying) {
-      paint.translate(Math.sin(animationTick * 90) * screenShake * .22, Math.cos(animationTick * 77) * screenShake * .18);
-      screenShake *= .82;
-    } else screenShake = 0;
-
-    // Quiet editorial grid: all monochrome. Only actual playable notes use color.
-    paint.strokeStyle = '#ffffff0b';
-    paint.lineWidth = 1;
-    for (let x = 32; x <= 608; x += 32) {
-      paint.beginPath(); paint.moveTo(x, 0); paint.lineTo(x, 540); paint.stroke();
-    }
-    for (let y = 28; y <= 512; y += 32) {
-      paint.beginPath(); paint.moveTo(0, y); paint.lineTo(640, y); paint.stroke();
-    }
-    const vignette = paint.createRadialGradient(320, 270, 35, 320, 270, 380);
-    vignette.addColorStop(0, '#ffffff08');
-    vignette.addColorStop(1, '#00000000');
-    paint.fillStyle = vignette;
-    paint.fillRect(0, 0, 640, 540);
-
-    paint.save();
-    paint.translate(320, 255);
-    paint.rotate(Math.PI / 4);
-    paint.strokeStyle = '#ffffff37';
-    paint.lineWidth = 1.5;
-    paint.shadowColor = '#ffffff';
-    paint.shadowBlur = 11;
-    paint.strokeRect(-154, -154, 308, 308);
-    paint.shadowBlur = 0;
-    paint.strokeStyle = '#ffffff14';
-    paint.strokeRect(-142, -142, 284, 284);
-    paint.restore();
-
-    // Field and precision guides stay black & white.
-    paint.strokeStyle = '#ffffff17';
-    paint.lineWidth = 1;
-    for (let i = 0; i < 4; i++) {
-      const x = LANES[i];
-      paint.beginPath(); paint.moveTo(x - 31, 83); paint.lineTo(x - 31, HIT_Y + 36);paint.stroke();
-      paint.beginPath(); paint.moveTo(x + 31, 83); paint.lineTo(x + 31, HIT_Y + 36);paint.stroke();
-      paint.fillStyle = '#ffffff08';
-      paint.fillRect(x - 30, 85, 60, HIT_Y - 85);
-    }
-
-    paint.textAlign = 'center';
-    paint.font = '700 10px Inter, Segoe UI, Arial';
-    paint.fillStyle = '#ffffff65';
-    paint.fillText('COMBO', 320, 193);
-    paint.font = '800 52px Inter, Segoe UI, Arial';
-    paint.fillStyle = isPlaying ? '#ffffff' : '#ffffff73';
-    paint.shadowColor = '#ffffff';
-    paint.shadowBlur = isPlaying ? 16 : 0;
-    paint.fillText(String(combo), 320, 255);
-    paint.shadowBlur = 0;
-    paint.strokeStyle = '#ffffff17';
-    paint.beginPath(); paint.arc(320, 235, 53 + (isPlaying ? pulse * 1.5 : 0), 0, Math.PI * 2);paint.stroke();
-
-    // White beat visualizer; intentionally no rainbow background decoration.
-    paint.fillStyle = '#ffffff50';
-    for (let i = 0; i < 26; i++) {
-      const height = 3 + Math.abs(Math.sin(phase * 3.4 + i * .42) * (11 + pulse * (isPlaying ? 15 : 4)));
-      paint.fillRect(22 + i * 8, 494 - height / 2, 2, height);
-    }
-    paint.strokeStyle = '#ffffff63';
-    paint.lineWidth = 1.2;
-    paint.shadowColor = '#ffffff';
-    paint.shadowBlur = 8;
-    paint.beginPath();paint.moveTo(126, HIT_Y);paint.lineTo(514, HIT_Y);paint.stroke();
-    paint.shadowBlur = 0;
-
-    // Multi-layer additive bloom is restricted to the gameplay dots.
-    function noteDot(x, y, radius, color, strength = 1) {
-      paint.save();
-      paint.globalCompositeOperation = 'lighter';
-      paint.shadowColor = color;
-      paint.fillStyle = color;
-      paint.globalAlpha = .12 * strength;
-      paint.shadowBlur = radius * 3.7;
-      paint.beginPath();paint.arc(x, y, radius * 1.9, 0, Math.PI * 2);paint.fill();
-      paint.globalAlpha = .32 * strength;
-      paint.shadowBlur = radius * 2.2;
-      paint.beginPath();paint.arc(x, y, radius * 1.3, 0, Math.PI * 2);paint.fill();
-      paint.globalAlpha = strength;
-      paint.shadowBlur = radius * 1.35;
-      paint.beginPath();paint.arc(x, y, radius, 0, Math.PI * 2);paint.fill();
-      paint.shadowBlur = 0;
-      paint.globalAlpha = .8 * strength;
-      paint.fillStyle = '#ffffff';
-      paint.beginPath();paint.arc(x - radius * .2, y - radius * .23, Math.max(1.2, radius * .29), 0, Math.PI * 2);paint.fill();
-      paint.restore();
-    }
-
-    for (let lane = 0; lane < 4; lane++) {
-      const x = LANES[lane];
-      const active = visualHits[lane] > performance.now();
-      paint.strokeStyle = '#ffffff7b';
-      paint.lineWidth = 1.3;
-      paint.beginPath();paint.arc(x, HIT_Y, 25, 0, Math.PI * 2);paint.stroke();
-      // One colored dot per lane, with stronger bloom when hit.
-      noteDot(x, HIT_Y, active ? 13 : 7.5, COLORS[lane], active ? 1 : .8);
-      paint.textAlign = 'center';
-      paint.font = '750 12px Inter, Segoe UI, Arial';
-      paint.fillStyle = active ? '#ffffff' : '#ffffff82';
-      paint.fillText(KEYS[lane], x, 446);
-    }
-
-    if (isPlaying || gameState === 'paused') {
-      for (const note of notes) {
-        if (note.judged) continue;
-        const progress = 1 - (note.time - t) / TRAVEL_TIME;
-        if (progress < -.03 || progress > 1.18) continue;
-        const x = LANES[note.lane], y = SPAWN_Y + (HIT_Y - SPAWN_Y) * progress;
-        const alpha = clamp((progress + .03) * 5, 0, 1);
-        noteDot(x, y, 10, COLORS[note.lane], alpha);
-        // Short white speed line for positional clarity.
-        paint.strokeStyle = '#ffffff4a';
-        paint.lineWidth = 1;
-        paint.beginPath();paint.moveTo(x, y - 17);paint.lineTo(x, y - 30);paint.stroke();
-      }
-    } else if (gameState === 'idle') {
-      for (let lane = 0; lane < 4; lane++) {
-        const progress = (animationTick * .20 + lane * .23) % 1;
-        noteDot(LANES[lane], SPAWN_Y + (HIT_Y - SPAWN_Y) * progress, 8.5, COLORS[lane], .35);
-      }
-    }
-
-    for (const p of particles) {
-      p.life += dt;
-      p.x += p.vx * dt * 60; p.y += p.vy * dt * 60; p.vy += dt * 10;
-      const alpha = clamp(1 - p.life / p.ttl, 0, 1);
-      paint.save();paint.globalAlpha = alpha;
-      paint.shadowColor = p.color;paint.shadowBlur = 18 * alpha;
-      paint.fillStyle = p.color;
-      paint.beginPath();paint.arc(p.x, p.y, p.radius * alpha, 0, Math.PI * 2);paint.fill();
-      paint.restore();
-    }
-    particles = particles.filter(p => p.life < p.ttl);
-    paint.restore();
-
-    paint.textAlign = 'left';paint.font = '700 10px Inter, Segoe UI, Arial';
-    paint.fillStyle = '#ffffff70';paint.fillText('RHYTHM.PLAY  /  VOL.01', 21, 515);
-    paint.textAlign = 'right';paint.fillText('112 BPM    •    NO FAIL', 618, 515);
-  }
-
-  function loop(timestamp) {
-    const dt = Math.min(0.07, Math.max(0, (timestamp - lastFrame) / 1000));
-    lastFrame = timestamp;
-    if (gameState === 'playing' && audio) {
-      const t = Math.max(0, audio.currentTime - audioOrigin);
-      lastTime = t;
-      scheduleMusic();
-      missExpiredNotes(t);
-      updateProgress(t);
-      if (t >= TRACK_DURATION + .34) endGame();
-    }
-    drawScene(lastTime, dt);
-    requestAnimationFrame(loop);
-  }
-
-  function setupControls() {
-    $('durationTime').textContent = timeFmt(TRACK_DURATION);
-    const dots = $('noteDots');
-    for (let i = 0; i < 15; i++) dots.appendChild(document.createElement('i'));
-    $('startBtn').addEventListener('click', startGame);
-    $('playAgainBtn').addEventListener('click', startGame);
-    $('restartFromPause').addEventListener('click', startGame);
-    $('resumeBtn').addEventListener('click', togglePause);
-    $('pauseBtn').addEventListener('click', togglePause);
-    $('volume').addEventListener('input', e => { volume = Number(e.target.value) / 100; if (audio && master) master.gain.setTargetAtTime(volume * .80, audio.currentTime, .03); });
-    const help = $('helpDialog');
-    $('helpBtn').addEventListener('click', () => help.showModal());
-    $('closeHelp').addEventListener('click', () => help.close());
-    $('gotItBtn').addEventListener('click', () => help.close());
-    $('fullscreenBtn').addEventListener('click', async () => {
-      try { if (document.fullscreenElement) await document.exitFullscreen(); else await document.documentElement.requestFullscreen(); } catch (_) { /* Fullscreen is unavailable in some embedded browsers. */ }
-    });
-    window.addEventListener('keydown', event => {
-      if (event.repeat || help.open || /INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)) return;
-      if (event.code === 'Space') { event.preventDefault(); if (gameState === 'playing' || gameState === 'paused') void togglePause(); return; }
-      const lane = KEYS.indexOf(event.key.toUpperCase());
-      if (lane !== -1) {
-        event.preventDefault();
-        hitLane(lane);
-        const btn = document.querySelector(`[data-lane="${lane}"]`);
-        if (btn) btn.classList.add('active');
-      }
-    });
-    window.addEventListener('keyup', event => {
-      const lane = KEYS.indexOf(event.key.toUpperCase());
-      if (lane !== -1) document.querySelector(`[data-lane="${lane}"]`)?.classList.remove('active');
-    });
-    document.querySelectorAll('[data-lane]').forEach(button => {
-      button.addEventListener('pointerdown', event => { event.preventDefault(); button.classList.add('active'); hitLane(Number(button.dataset.lane)); });
-      const unpress = () => button.classList.remove('active');
-      button.addEventListener('pointerup', unpress);
-      button.addEventListener('pointercancel', unpress);
-      button.addEventListener('pointerleave', unpress);
-    });
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden && gameState === 'playing') void togglePause();
-    });
-  }
-
-  window.rhythmCore = {setPalette(colors) { if (Array.isArray(colors) && colors.length === 4) COLORS.splice(0, 4, ...colors); }, getStatus() { return gameState; }};
-  setupControls();
-  resetStats();
-  setState('idle');
-  resizeCanvas();
-  requestAnimationFrame(loop);
-})();
-
-</script>
-<dialog id="arcadeDialog" class="rh-dialog" aria-labelledby="arcadeTitle"><div class="rh-dialog-shell"><div class="rh-dialog-head"><div><span class="rh-eyebrow">RHYTHM.PLAY / ARCADE SERVICES</span><h2 id="arcadeTitle">SKIN SHOP</h2></div><button id="arcadeClose" class="rh-close" type="button" aria-label="Close">×</button></div><div id="arcadeContent"></div></div></dialog><div class="rh-toast" id="rhToast" role="status" aria-live="polite"></div>
+  <dialog id="helpDialog" class="rh-dialog" aria-labelledby="helpTitle">
+    <div class="rh-dialog-shell">
+      <div class="rh-dialog-head"><div><span class="rh-eyebrow">THE BASICS</span><h2 id="helpTitle">HOW TO PLAY</h2></div><button type="button" id="closeHelp" class="rh-close" aria-label="Close instructions">×</button></div>
+      <div class="instruction-list"><p><strong>01 / MOVE.</strong> Move your mouse over the game field, or touch and drag your finger on a phone or tablet. A visible white cursor ring follows you.</p><p><strong>02 / COLLECT.</strong> Intercept the moving colored dots. Each one you touch adds to your score and combo. No clicks or keyboard timing.</p><p><strong>03 / KEEP UP.</strong> Faster patterns appear as the original phonk beat progresses. Missed dots reset your combo. Every completed run earns coins for cosmetic note skins.</p><p><strong>04 / PAUSE.</strong> Press Space or the Pause button. Sound starts only after you choose Start, as required by browsers.</p></div>
+      <button id="gotIt" class="main-button" type="button">GOT IT</button>
+    </div>
+  </dialog>
+  <dialog id="arcadeDialog" class="rh-dialog" aria-labelledby="arcadeTitle"><div class="rh-dialog-shell"><div class="rh-dialog-head"><div><span class="rh-eyebrow">RHYTHM.PLAY / ARCADE SERVICES</span><h2 id="arcadeTitle">SKIN SHOP</h2></div><button id="arcadeClose" class="rh-close" type="button" aria-label="Close">×</button></div><div id="arcadeContent"></div></div></dialog>
+  <div id="rhToast" class="rh-toast" role="status" aria-live="polite"></div>
 </body>
 </html>
