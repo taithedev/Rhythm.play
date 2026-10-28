@@ -3,7 +3,7 @@
   'use strict';
 
   const STORAGE_KEY = 'rhythm-play-arcade-v1';
-  const TRACK = 'Neon Side Street';
+  const TRACK = 'Midnight Run';
   const skins = [
     { id:'pulse', name:'Pulse Original', cost:0, tier:'STARTER', caption:'The classic ultraviolet arcade signal.', colors:['#8c85ff','#b47bff','#ff73bb','#76f5ca'], accent:'#bf83ff', glow:'#a569ff' },
     { id:'afterglow', name:'Afterglow', cost:450, tier:'RARE', caption:'Magenta, rose, and late-night electricity.', colors:['#ff6a9c','#fc83e7','#ffb07b','#ffc9e7'], accent:'#ff7cb6', glow:'#ed429a' },
@@ -131,7 +131,7 @@
       scores.slice(0,20).map((s,i)=>'<div class="rh-score-tr"><span class="rh-rank '+(i<3?'rh-top-rank':'')+'">'+String(i+1).padStart(2,'0')+'</span><span class="rh-score-name">'+escapeHtml(s.username || s.player_name || 'PLAYER')+'</span><span class="rh-score-grade">'+escapeHtml(s.grade||'—')+'</span><span>'+fmt(s.maxCombo ?? s.max_combo)+'</span><strong>'+fmt(s.score)+'</strong></div>').join('')+'</div>';
   }
   function renderLeaderboard() {
-    const scores = [...state.scores].sort((a,b) => b.score-a.score || b.accuracy-a.accuracy);
+    const scores = state.scores.filter(s=>s.track===TRACK).sort((a,b) => b.score-a.score || b.accuracy-a.accuracy);
     content.innerHTML = '<div class="rh-section-intro"><div><div class="rh-eyebrow">CHASE THE PERFECT RUN</div><p>Real performances. No fabricated scores or bots.</p></div><div class="rh-coin-pill">'+fmt(state.runs)+' COMPLETED RUNS</div></div>'+
       '<div class="rh-board-tabs"><button type="button" data-board="local" class="'+(boardScope==='local'?'active':'')+'">MY DEVICE</button><button type="button" data-board="global" class="'+(boardScope==='global'?'active':'')+'">WORLDWIDE '+(cloudReady?'●':'◇')+'</button></div>'+
       '<div id="rhBoardBody">'+(boardScope === 'local' ? makeRows(scores,'No scores yet') : '<div class="rh-empty">Checking the community leaderboard…</div>')+'</div>'+
@@ -149,7 +149,7 @@
       return;
     }
     try {
-      const response = await fetch(cloudEndpoint()+'?select=player_name,score,accuracy,max_combo,grade,played_at&order=score.desc&limit=20',{headers:cloudHeaders()});
+      const response = await fetch(cloudEndpoint()+'?select=player_name,score,accuracy,max_combo,grade,played_at&track=eq.Midnight%20Run&order=score.desc&limit=20',{headers:cloudHeaders()});
       if (!response.ok) throw new Error('Leaderboard request failed');
       const rows = await response.json();
       if (boardScope === 'global' && currentView === 'leaderboard' && target.isConnected) target.innerHTML = makeRows(Array.isArray(rows)?rows:[],'No worldwide scores yet');
@@ -169,7 +169,7 @@
     } catch (_) { notify('Score saved locally; worldwide sync is offline.'); }
   }
   function renderProfile() {
-    const best = state.scores.reduce((value,s) => Math.max(value,s.score),0);
+    const best = state.scores.filter(s=>s.track===TRACK).reduce((value,s) => Math.max(value,s.score),0);
     content.innerHTML = '<div class="rh-profile-layout"><div class="rh-profile-crest">R<span>✦</span></div><div><span class="rh-eyebrow">YOUR ARCADE IDENTITY</span>'+
       '<form id="rhProfileForm"><label class="rh-field-label" for="rhUsername">DISPLAY NAME</label><div class="rh-field-row"><input required minlength="2" maxlength="18" id="rhUsername" type="text" value="'+escapeHtml(state.username)+'" autocomplete="nickname" /><button type="submit" class="rh-card-btn">SAVE NAME</button></div></form>'+
       '<p class="rh-disclaimer">Only your display name is shared with the global leaderboard when online sync is enabled. Avoid using personal details.</p></div></div>'+
@@ -215,7 +215,7 @@
     state.coins = Math.min(10000000,state.coins + earned);
     state.lifetime += earned;
     state.runs += 1;
-    const entry = {username:state.username,score,accuracy,maxCombo,grade,playedAt:new Date().toISOString()};
+    const entry = {username:state.username,score,accuracy,maxCombo,grade,track:TRACK,playedAt:new Date().toISOString()};
     state.scores.unshift(entry);
     state.scores.sort((a,b)=>b.score-a.score);
     state.scores = state.scores.slice(0,100);
