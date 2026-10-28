@@ -101,7 +101,7 @@
     const selected = skin.id === state.equipped;
     const action = selected ? 'EQUIPPED' : owned ? 'EQUIP' : 'UNLOCK';
     return '<article class="rh-skin-card '+(selected?'rh-equipped':'')+'">' +
-      '<div class="rh-skin-art" style="--s1:'+skin.colors[0]+';--s2:'+skin.colors[1]+';--s3:'+skin.colors[2]+';--s4:'+skin.colors[3]+'"><span class="rh-skin-geometry"></span><span class="rh-skin-shine"></span><span class="rh-skin-chip">'+skin.tier+'</span></div>'+
+      '<div class="rh-skin-art" style="--s1:'+skin.colors[0]+';--s2:'+skin.colors[1]+';--s3:'+skin.colors[2]+';--s4:'+skin.colors[3]+'"><span class="rh-preview-dots">'+skin.colors.map(c=>'<i style="--note-color:'+c+'"></i>').join('')+'</span><span class="rh-skin-chip">'+skin.tier+'</span></div>'+
       '<div class="rh-skin-info"><h3>'+escapeHtml(skin.name)+'</h3><p>'+escapeHtml(skin.caption)+'</p>'+
       '<div class="rh-skin-bottom"><strong>'+(owned ? (selected?'ACTIVE':'OWNED') : '✦ '+fmt(skin.cost))+'</strong>'+
       '<button type="button" class="rh-card-btn" data-skin="'+skin.id+'" '+(selected?'disabled':'')+'>'+action+'</button></div></div></article>';
@@ -139,7 +139,7 @@
     if (boardScope === 'global') void loadGlobal();
   }
   function cloudHeaders(extra={}) {
-    return {'apikey':cloud.supabaseAnonKey,'Authorization':'Bearer '+cloud.supabaseAnonKey,...extra};
+    return {'apikey':cloud.supabaseAnonKey,...(!cloud.supabaseAnonKey.startsWith('sb_publishable_') ? {'Authorization':'Bearer '+cloud.supabaseAnonKey} : {}),...extra};
   }
   function cloudEndpoint() { return cloud.supabaseUrl.replace(/\/$/,'')+'/rest/v1/rhythm_scores'; }
   async function loadGlobal() {
@@ -175,6 +175,27 @@
       '<p class="rh-disclaimer">Only your display name is shared with the global leaderboard when online sync is enabled. Avoid using personal details.</p></div></div>'+
       '<div class="rh-profile-stats"><div><small>PULSE COINS</small><strong>✦ '+fmt(state.coins)+'</strong></div><div><small>BEST SCORE</small><strong>'+fmt(best)+'</strong></div><div><small>RUNS CLEARED</small><strong>'+fmt(state.runs)+'</strong></div><div><small>OWNED SKINS</small><strong>'+state.owned.length+' / '+skins.length+'</strong></div></div>';
   }
+  async function syncCatalog() {
+    if (!cloudReady) return;
+    try {
+      const url = cloud.supabaseUrl.replace(/\/$/, '')+'/rest/v1/rhythm_skins?select=id,name,tier,price,palette&is_active=eq.true&order=price.asc';
+      const res = await fetch(url, {headers:cloudHeaders()});
+      if (!res.ok) return;
+      const rows = await res.json();
+      if (!Array.isArray(rows)) return;
+      for (const incoming of rows) {
+        const skin = skins.find(s => s.id === incoming.id);
+        if (!skin || !Number.isInteger(incoming.price) || incoming.price < 0 || incoming.price > 1000000) continue;
+        if (!Array.isArray(incoming.palette) || incoming.palette.length !== 4 || !incoming.palette.every(c => /^#[0-9a-fA-F]{6}$/.test(c))) continue;
+        skin.cost = incoming.price;
+        skin.colors = incoming.palette.slice();
+        if (['STARTER','RARE','EPIC','LEGENDARY'].includes(incoming.tier)) skin.tier = incoming.tier;
+      }
+      applySkin();
+      if (currentView === 'shop' && dialog.open) renderShop();
+    } catch (_) { /* Use the built-in catalog offline. */ }
+  }
+
   function saveProfile(e) {
     e.preventDefault();
     const value = validName($('rhUsername').value);
@@ -226,4 +247,5 @@
   window.addEventListener('rhythm:completed',onComplete);
   renderHeader();
   applySkin();
+  void syncCatalog();
 })();
