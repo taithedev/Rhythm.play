@@ -8,7 +8,7 @@ create table if not exists public.rhythm_scores (
  accuracy numeric(5,2) not null check (accuracy between 0 and 100),
  max_combo integer not null check (max_combo between 0 and 10000),
  grade text not null check (grade in ('S','A','B','C','D')),
- track text not null default 'Neon Side Street' check (track = 'Neon Side Street'),
+ track text not null default 'Midnight Run' check (track in ('Neon Side Street','Midnight Run')),
  played_at timestamptz not null default now()
 );
 create index if not exists rhythm_scores_rank_idx on public.rhythm_scores (score desc, played_at asc);
@@ -36,7 +36,7 @@ for insert to anon, authenticated with check (
  and accuracy between 0 and 100
  and max_combo between 0 and 10000
  and grade in ('S','A','B','C','D')
- and track = 'Neon Side Street'
+ and track = 'Midnight Run'
 );
 drop policy if exists "rhythm_skins_public_read" on public.rhythm_skins;
 create policy "rhythm_skins_public_read" on public.rhythm_skins
@@ -49,3 +49,10 @@ insert into public.rhythm_skins(id,name,tier,price,palette) values
 ('toxic','Cyberlime','EPIC',1500,array['#d4fa77','#6efc94','#a6f37e','#e8ffb3']),
 ('prism','Prism Shift','LEGENDARY',2400,array['#a49fff','#ff85d3','#64e9ff','#ffe987'])
 on conflict (id) do nothing;
+
+-- For installations upgrading from the initial lane-mode score schema:
+-- ALTER TABLE rhythm_scores DROP CONSTRAINT IF EXISTS rhythm_scores_track_check;
+-- ALTER TABLE rhythm_scores ADD CONSTRAINT rhythm_scores_track_check
+--   CHECK (track in ('Neon Side Street','Midnight Run'));
+-- Afterward, re-create rhythm_scores_guest_submit with track = 'Midnight Run'.
+-- The migration above was applied to the Zuzify project. Historical scores are retained.
