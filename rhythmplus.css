@@ -352,3 +352,8 @@ button:focus-visible,input:focus-visible{
 @media(prefers-reduced-motion:reduce){
   .rh-preview-dots i,.rh-skin-card,.primary-btn,.rh-card-btn{transition:none!important;transform:none!important}
 }
+
+/* Status and judgements stay monochrome; colors belong only to playable dots. */
+.hit-notice,.hit-notice.show{color:#fff!important;text-shadow:0 0 14px #ffffff72!important}
+.result-grade,.rh-earned{color:#fff!important}
+.rh-skin-card .rh-preview-dots i{background:var(--note-color)!important}
