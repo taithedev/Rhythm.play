@@ -190,7 +190,7 @@
     const accuracy = cap(run.accuracy,0,100);
     const maxCombo = Math.floor(cap(run.maxCombo,0,10000));
     const grade = /^[SABCD]$/.test(run.grade) ? run.grade : 'D';
-    const earned = Math.min(1500,Math.max(25,Math.round(score / 150)));
+    const earned = score > 0 ? Math.min(1500,Math.max(25,Math.round(score / 150))) : 0;
     state.coins = Math.min(10000000,state.coins + earned);
     state.lifetime += earned;
     state.runs += 1;
