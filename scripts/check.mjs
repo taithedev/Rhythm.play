@@ -20,6 +20,10 @@ for(const token of ['renderShop','renderLeaderboard','postGlobal','localStorage'
 for(const name of ['cursor-game.js','rhythmplus.js','config.js'])new Script(readFileSync(name,'utf8'),{filename:name});
 JSON.parse(readFileSync('vercel.json','utf8'));
 const sql=readFileSync('supabase/schema.sql','utf8');
+const cfg=readFileSync('config.js','utf8');
+if(!cfg.includes('neonDataApiUrl'))throw new Error('Missing Neon Data API URL');
+if(!platform.includes('/rhythm_scores')||!platform.includes('/rhythm_skins'))throw new Error('Neon REST endpoints not wired');
+if(platform.includes('cloud.supabaseUrl')||platform.includes('cloud.supabaseAnonKey'))throw new Error('Legacy Supabase cloud client remains');
 if(!sql.includes('rhythm_scores')||!sql.includes('rhythm_skins')||!sql.includes('Midnight Run'))throw new Error('Incorrect score schema');
 
 /* Initialize the game in a fake browser to catch missing element wiring and startup exceptions. */
@@ -52,4 +56,4 @@ if(!node('gameCanvas').events.has('pointermove'))throw new Error('Pointer gamepl
 window.rhythmCore.setPalette(['#ff00aa','#00ddff','#ffee55','#99ff88']);
 if(!callbacks.length)throw new Error('Animation loop not created');
 callbacks.shift()(16);
-console.log('Rhythm.play PASS: all assets, original phonk engine, pointer/touch inputs, score hooks, shop, SQL, and startup simulation.');
+console.log('Rhythm.play PASS: all assets, original phonk engine, pointer/touch inputs, score hooks, shop, Neon Data API wiring, SQL, and startup simulation.');
