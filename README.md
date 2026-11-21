@@ -10,7 +10,7 @@ An original **mouse-and-touch cursor chase** arcade, not a four-lane rhythm game
 - **Scoring** for collected dots, consecutive-hit combos, accuracy, missed targets, letter grades, and personal bests.
 - **Monochrome interface** with focused colored note dots and additive bloom. No rainbow backgrounds, no neon gradients on normal panels.
 - **Pause/resume** by Space or the pause control. Browser audio is synced to the game timeline and pauses with gameplay.
-- **Skin shop**, earnable coins, player profile, local score history, and a Zuzify Supabase global leaderboard.
+- **Skin shop**, earnable coins, player profile, local score history, and a Neon-backed global leaderboard.
 - **Mobile responsive** playfield, touch input, fullscreen button, and reduced-motion support.
 - Static HTML/CSS/JavaScript, no dependencies or audio downloads.
 
@@ -34,17 +34,14 @@ For Vercel, connect this GitHub repository, choose Framework Preset **Other**, k
 
 Run the zero-dependency test with `node scripts/check.mjs`. It is also part of the GitHub Actions workflow.
 
-## Zuzify Supabase integration
+## Neon leaderboard migration (staged)
 
-Uses the existing project **zuzify**. All game-specific tables use the `rhythm_` prefix.
+This migration branch uses the Neon **Zuzify App Data** project (`young-truth-44623930`), database `zuzify` with the Neon Data API. We created `rhythm_scores` and `rhythm_skins` and copied **1 historical score and 6 skins** from Supabase, preserving their original IDs. The source Supabase database has **not** been deleted or modified.
 
-- `rhythm_scores`: globally readable, guest-submitted scores. Entries for the new phonk game use track `Midnight Run`. Old `Neon Side Street` entries are retained, but filtered out of the new leaderboards.
-- `rhythm_skins`: server-managed, publicly readable skin catalog (clients cannot alter prices).
-- Browser-safe public URL and **publishable** key are in `config.js`. Do not add service-role keys or private credentials.
-
-Server constraints and RLS are enabled. Guest scores are **unverified** because the browser reports the result. Do not use global rankings as a basis for cash prizes, valuable items, or high-stakes competition without authenticated server-side verification and rate limiting.
-
-Coins and purchased cosmetic skins are currently saved in localStorage on each device. They do not sync to the database or other devices; secure shared wallets require account authentication and server-authoritative accounting.
+- `config.js` contains a **public** Neon Data API URL, not a database password or server secret. Only the leaderboard and skins are cloud-backed; coins and progress stay local to the device.
+- Scores are guest-supplied and **unverified**; they must not determine real prizes or financial rewards. Public launch should add server-side score validation and rate limiting.
+- Before merging, configure Neon Data API CORS for the actual production HTTPS origin, run `node scripts/check.mjs`, and test GET leaderboard, POST score, and GET skins in a browser preview. The live origin was not confirmed in this branch.
+- At release time, perform a final delta copy of any new historical Supabase scores, reconcile counts, and only then switch the production frontend. Keep Supabase as rollback until stable.
 
 ## File layout
 
@@ -53,8 +50,8 @@ Coins and purchased cosmetic skins are currently saved in localStorage on each d
 - `cursor-game.js` — procedural original phonk audio, animation, cursor collision game, HUD
 - `rhythmplus.js` — skins, coins, profile, local/global rankings
 - `rhythmplus.css` — skins, profile, and leaderboard components
-- `config.js` — Zuzify Supabase public configuration
-- `supabase/schema.sql` — `rhythm_` tables and row-level-security policies
+- `config.js` — public Neon Data API configuration
+- `supabase/schema.sql` — archived Supabase schema; Neon schema uses the anonymous role
 - `scripts/check.mjs` — syntax and startup validation
 - `.github/workflows/ci.yml` — CI verification on push
 
