@@ -21,8 +21,7 @@
   const cap = (n, low, high) => Math.min(high, Math.max(low, Number(n) || 0));
   const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
   const cloud = window.RHYTHM_CONFIG || {};
-  const cloudReady = typeof cloud.supabaseUrl === 'string' && /^https:\/\//i.test(cloud.supabaseUrl) &&
-      typeof cloud.supabaseAnonKey === 'string' && cloud.supabaseAnonKey.length > 15;
+  const cloudReady = typeof cloud.neonDataApiUrl === 'string' && /^https:\/\//i.test(cloud.neonDataApiUrl);
   let currentView = 'play';
   let boardScope = 'local';
   let state = readData();
@@ -139,13 +138,13 @@
     if (boardScope === 'global') void loadGlobal();
   }
   function cloudHeaders(extra={}) {
-    return {'apikey':cloud.supabaseAnonKey,...(!cloud.supabaseAnonKey.startsWith('sb_publishable_') ? {'Authorization':'Bearer '+cloud.supabaseAnonKey} : {}),...extra};
+    return {'Accept':'application/json',...extra};
   }
-  function cloudEndpoint() { return cloud.supabaseUrl.replace(/\/$/,'')+'/rest/v1/rhythm_scores'; }
+  function cloudEndpoint() { return cloud.neonDataApiUrl.replace(/\/$/,'')+'/rhythm_scores'; }
   async function loadGlobal() {
     const target = $('rhBoardBody');
     if (!cloudReady) {
-      target.innerHTML = '<div class="rh-empty"><span class="rh-empty-icon">◎</span><strong>Worldwide rankings are not connected</strong><p>Device scores work now. To enable the shared leaderboard, configure Supabase using the repository setup guide.</p></div>';
+      target.innerHTML = '<div class="rh-empty"><span class="rh-empty-icon">◎</span><strong>Worldwide rankings are not connected</strong><p>Device scores work now. To enable the shared leaderboard, configure Neon Data API using the repository setup guide.</p></div>';
       return;
     }
     try {
@@ -154,7 +153,7 @@
       const rows = await response.json();
       if (boardScope === 'global' && currentView === 'leaderboard' && target.isConnected) target.innerHTML = makeRows(Array.isArray(rows)?rows:[],'No worldwide scores yet');
     } catch (_) {
-      if (target.isConnected) target.innerHTML = '<div class="rh-empty"><strong>Worldwide leaderboard unavailable</strong><p>Your local scores are safe. Check the Supabase configuration and connection.</p></div>';
+      if (target.isConnected) target.innerHTML = '<div class="rh-empty"><strong>Worldwide leaderboard unavailable</strong><p>Your local scores are safe. Check the Neon Data API configuration and connection.</p></div>';
     }
   }
   async function postGlobal(entry) {
@@ -178,7 +177,7 @@
   async function syncCatalog() {
     if (!cloudReady) return;
     try {
-      const url = cloud.supabaseUrl.replace(/\/$/, '')+'/rest/v1/rhythm_skins?select=id,name,tier,price,palette&is_active=eq.true&order=price.asc';
+      const url = cloud.neonDataApiUrl.replace(/\/$/, '')+'/rhythm_skins?select=id,name,tier,price,palette&is_active=eq.true&order=price.asc';
       const res = await fetch(url, {headers:cloudHeaders()});
       if (!res.ok) return;
       const rows = await res.json();
